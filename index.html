@@ -64,11 +64,14 @@ function mvBoost() {
 }
 
 function updateShake(z1,z2) {
+    document.getElementById("salt").style.backgroundImage = "url(img/saltbae1.gif)";
+    
 	var diff = Math.abs(z2-z1)
 	gm.shakeSalt(diff);
 
 	document.getElementById("salt_overlay").innerHTML = "+ "+diff.toFixed(2)+" mg";
 	anim_salt_overlay();
+
 }
 
 function stop() {
@@ -237,7 +240,7 @@ body {
 }
 #salt {
 	position: relative;
-    background-image: url("img/saltbae2.gif");
+    background-image: url("img/saltbae.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
