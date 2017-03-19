@@ -7,8 +7,20 @@
         <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
         <script type="text/javascript" src="js/acceleration_monitor.js"></script>
         <script type="text/javascript" src="js/game_manager.js"></script>
-        <script type="text/javascript" src="js/leaderboard.js"></script>
+        <script type="text/javascript" src="js/leaderboard.js">
+        	function setName() {
+				var myName = documents.getElementById('name').value;
+				if(myName.length ==0) {
+				alert('Please enter real value in text box!');
+				return;
+			}
+				gm.setName(name);
+				window.location.href='index.html';
+}
+</script>
     </head>
+
+
 
 
 <style type="text/css">
@@ -32,8 +44,8 @@ body {
 
  <div id="main">
  	<h1>Salt Sprinkler</h1>
- 	<input type="text" placeholder="name" name="name">
-  	 <button onclick="window.location.href='index.html'">Continue</button>
+ 	<input type="text" id="name" placeholder="name" name="name">
+  	 <button onclick="setName()">Continue</button>
    </div>
 </body>
 </html>
