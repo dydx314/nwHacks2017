@@ -11,14 +11,20 @@
 		</script>
 		<script type="text/javascript"> 
 		function setName() {
-				var myName = documents.getElementById('name').value;
-				if(myName.length ==0) {
-				alert('Please enter name');
-				return;
-			}
-				gm.setName(myName);
-				window.location ='index.html';
-			}
+
+            
+            var myName = document.getElementById('name').value;
+			if (myName.length == 0) {
+                alert('Please enter name!');
+                return;
+            }
+
+            gm = new GameManager();
+            gm.setName(myName);
+            window.location.href ='index.html';
+
+            
+        }
 		</script>
     </head>
 
@@ -46,8 +52,8 @@ body {
 
  <div id="main">
  	<h1>Salt Sprinkler</h1>
- 	<input type="text" id="name"/>
-  	 <input type="submit" value ="Go!" onclick="setName()"/>
+     <input type="text" id="name"/>
+  	 <button onclick="setName()">submit</button>
    </div>
 </body>
 </html>

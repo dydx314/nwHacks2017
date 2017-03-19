@@ -1,4 +1,5 @@
 function GameManager() {
+    this.name = "";
 	this.salt = 0;
     this.totalRating = 0;
     this.avgRating = 0;
@@ -15,6 +16,10 @@ function GameManager() {
 	this.off = false;
 	this.optimal = 100;
 	this.tip = 0;
+}
+
+GameManager.prototype.setName = function(name) {
+    this.name = name;
 }
 
 GameManager.prototype.stop = function() {
