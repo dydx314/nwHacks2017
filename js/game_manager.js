@@ -1,5 +1,8 @@
 function GameManager() {
 	this.salt = 0;
+    this.totalRating = 0;
+    this.avgRating = 0;
+    this.raters = 0;
 	this.mv = 0;
 	//this.items = {};
 	// {"itemName": {"cost": cost, "max": amount}}
@@ -15,18 +18,21 @@ function GameManager() {
 }
 
 GameManager.prototype.stop = function() {
-	if(this.off == false) {
-		this.on = true;
-	}
+    this.raters++;
 	if(this.optimal == this.salt) {
-		this.tip = 5;
-	} 
+		this.tip += 5;
+        this.totalRating += 5;
+	}
 	if(this.optimal > this.salt) {
-		this.tip = 2;
+		this.tip += 2;
+        this.totalRating += 2;
 	}
 	if(this.optimal < this.salt) {
-		this.tip = 1;
+		this.tip += 1;
+        this.totalRating += 1;
 	}
+    this.avgRating = this.totalRating/this.raters;
+    this.salt = 0;
 };
 
 GameManager.prototype.shakeSalt = function(salt) {

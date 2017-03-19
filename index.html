@@ -72,6 +72,8 @@ function updateShake(z1,z2) {
 
 function stop() {
 	gm.stop();
+    document.getElementById("tip_counter").innerHTML = "Total tip: $"+Math.round(gm.tip);
+    document.getElementById("avg_rating").innerHTML = "Customer Rating: "+Math.round(gm.avgRating*10)/10+"/5";
 }
 
 function renderUpdate() {
@@ -81,9 +83,6 @@ function renderUpdate() {
 	renderMV();
 }
 
-function renderEnd() {
-	document.getElementById("end").innerHTML = "$" + Math.round(gm.tip);
-}
 
 function renderMV() {
 	var bb = document.getElementById("b_buy");
@@ -198,7 +197,17 @@ body {
 	margin: 0.3em 0 0 0;
 }
 #counter {
-	font-size: 60px;
+	font-size: 40px;
+	font-weight: 400;
+	margin: 0.2em 0 0.2em 0;
+}
+#tip_counter {
+	font-size: 40px;
+	font-weight: 600;
+	margin: 0.2em 0 0.2em 0;
+}
+#avg_rating {
+	font-size: 40px;
 	font-weight: 600;
 	margin: 0.2em 0 0.2em 0;
 }
@@ -330,6 +339,11 @@ body {
 		<p id="end"> </p>
 
 		<h1>Salt Sprinkler</h1>
+        
+        <p id="tip_counter">Total tip: $0</p>
+        
+        <p id="avg_rating">Average Customer Rating: 0/5</p>
+        
 		<p id="counter">0 mg</p>
 		<div id="salt_wrapper">
 			<div id="salt"><div id="salt_overlay">+ 0 mg</div></div>
