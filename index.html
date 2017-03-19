@@ -204,12 +204,32 @@ body {
 }
 #salt {
 	position: relative;
-    background-image: url("img/saltbae.gif");
+    background-image: url("img/saltbae2.gif");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     width: 250px;
     height: 300px;
+    margin: 0 auto 0 auto;
+}
+#salt_overlay {
+	position: absolute;
+	bottom: 0;
+	color: #12336B;
+	font-size: 90px;
+	font-weight: bold;
+	white-space: nowrap;
+	text-align: center;
+	opacity: 0;
+}
+#food {
+	position: relative;
+    background-image: url("img/chinese.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 400px;
+    height: 100px;
     margin: 0 auto 0 auto;
 }
 #salt_overlay {
@@ -313,6 +333,9 @@ body {
 		<p id="counter">0 mg</p>
 		<div id="salt_wrapper">
 			<div id="salt"><div id="salt_overlay">+ 0 mg</div></div>
+		</div>
+        <div id="food_wrapper">
+			<div id="food"><div id="food_overlay"></div></div>
 		</div>
 		<button id="b_shake" onclick="updateShake(0,4.27)">Shake</button>
 
