@@ -8,26 +8,28 @@
         <script type="text/javascript" src="js/acceleration_monitor.js"></script>
         <script type="text/javascript" src="js/game_manager.js"></script>
         <script type="text/javascript" src="js/leaderboard.js">
-        	function setName() {
+		</script>
+		<script type="text/javascript"> 
+		function setName() {
 				var myName = documents.getElementById('name').value;
 				if(myName.length ==0) {
-				alert('Please enter real value in text box!');
+				alert('Please enter name');
 				return;
 			}
-				gm.setName(name);
-				window.location.href='index.html';
-}
-</script>
+				gm.setName(myName);
+				window.location ='index.html';
+			}
+		</script>
     </head>
-
-
-
 
 <style type="text/css">
 
 body {
 	font-family: 'Open Sans', sans-serif;
 	background-image: url("http://img.clipartall.com/restaurant-clip-art-restaurant-clip-art-262_201.gif"); 
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: 50% 50%;
 }
 
 #main {
@@ -44,8 +46,8 @@ body {
 
  <div id="main">
  	<h1>Salt Sprinkler</h1>
- 	<input type="text" id="name" placeholder="name" name="name">
-  	 <button onclick="setName()">Continue</button>
+ 	<input type="text" id="name"/>
+  	 <input type="submit" value ="Go!" onclick="setName()"/>
    </div>
 </body>
 </html>
