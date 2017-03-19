@@ -9,7 +9,25 @@ function GameManager() {
 	this.MAX_TURBULENCE = 100;
 	this.MV_TIER = {1: 0.1, 2:0.2, 3:0.5, 4:1, 5:2};
 	this.MV_COST = {0: 100, 1: 200, 2:500, 3:800, 4:1500};
+	this.off = false;
+	this.optimal = 100;
+	this.tip = 0;
 }
+
+GameManager.prototype.stop = function() {
+	if(this.off == false) {
+		this.on = true;
+	}
+	if(this.optimal == this.salt) {
+		this.tip = 5;
+	} 
+	if(this.optimal > this.salt) {
+		this.tip = 2;
+	}
+	if(this.optimal < this.salt) {
+		this.tip = 1;
+	}
+};
 
 GameManager.prototype.shakeSalt = function(salt) {
 	this.turbulence += salt;

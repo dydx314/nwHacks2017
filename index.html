@@ -50,6 +50,8 @@ function onShake(e1,e2) {
     updateShake(z1,z2);
 }
 
+
+
 function decreaseTurbulence() {
 	gm.decreaseTurbulence(1);
 }
@@ -68,11 +70,19 @@ function updateShake(z1,z2) {
 	anim_salt_overlay();
 }
 
+function stop() {
+	gm.stop();
+}
+
 function renderUpdate() {
 	document.getElementById("counter").innerHTML = Math.round(gm.salt)+" mg";
 	document.getElementById("store_salt").innerHTML = Math.round(gm.salt)+" mg";
 	renderTurbulence();
 	renderMV();
+}
+
+function renderEnd() {
+	document.getElementById("end").innerHTML = "$" + Math.round(gm.tip);
 }
 
 function renderMV() {
@@ -297,12 +307,17 @@ body {
 <body>
 	<div id="browsersux">Your computer and/or browser sux.</div>
 	<div id="main">
+		<p id="end"> </p>
+
 		<h1>Salt Sprinkler</h1>
 		<p id="counter">0 mg</p>
 		<div id="salt_wrapper">
 			<div id="salt"><div id="salt_overlay">+ 0 mg</div></div>
 		</div>
 		<button id="b_shake" onclick="updateShake(0,4.27)">Shake</button>
+
+		<button id="stop" onclick="stop()">Stop</button>
+
 		<p id="turbulence_desc">Shake to add some salt!</p>
 		<button onclick="showStore()">Store</button>
 		<span id="bonus_desc"></span>
