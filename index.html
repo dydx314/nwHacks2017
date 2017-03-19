@@ -117,12 +117,16 @@ function renderMV() {
     document.getElementById("tip_counter").innerHTML = "Total tip: $"+(Math.round(gm.tip)/100).toFixed(2);
     if (gm.mv == 1) {
         document.getElementById("food").style.backgroundImage = "url(img/freshslice.png)";
+        document.getElementById("salt").style.backgroundImage = "url(img/saltbae1.gif)";
     } else if (gm.mv == 2) {
         document.getElementById("food").style.backgroundImage = "url(img/chinese.jpg)";
+        document.getElementById("salt").style.backgroundImage = "url(img/saltbae2.gif)";
     } else if (gm.mv == 3) {
         document.getElementById("food").style.backgroundImage = "url(img/steak.jpg)";
+        document.getElementById("salt").style.backgroundImage = "url(img/saltbae3.gif)";
     } else if (gm.mv == 4) {
         document.getElementById("food").style.backgroundImage = "url(img/lobster.jpg)";
+        document.getElementById("salt").style.backgroundImage = "url(img/saltbae4.gif)";
     }
 
 }

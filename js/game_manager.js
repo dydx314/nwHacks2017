@@ -11,7 +11,7 @@ function GameManager() {
 	this.turbulence = 0;
 	this.MAX_TURBULENCE = 100;
 	this.MV_TIER = {0: 0.5, 1: 1, 2:2, 3:5, 4:10, 5:20};
-	this.MV_COST = {0: 1000, 1: 2000, 2:5000, 3:8000, 4:15000};
+	this.MV_COST = {0: 500, 1: 1000, 2:2500, 3:5000, 4:15000};
 	this.off = false;
 	this.optimal = 100;
 	this.tip = 0;
