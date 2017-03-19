@@ -17,10 +17,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
   res.json({ message: 'Yo!'});
 });
 
 app.get('/highscore', function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
   pg.connect(config, function (err, client, done) {
     if (err) {
       res.json({ err: "Cannot connect"});
@@ -39,6 +41,7 @@ app.get('/highscore', function (req, res) {
 });
 
 app.post('/submit_score', function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
   if (!req.body["name"] || !req.body["score"]) {
     res.json({ err: "missing name or score"});
     return;
