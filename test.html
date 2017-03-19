@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript">
+function AccelerationMonitor() {
+	this.monitoring = false;
+	this.defaultFilter = function(e1,e2) { return true; }
+	this.callback = function() {}
+	this.currentCallback = function() {}
+	this.filter = this.defaultFilter;
+	this.prevE = null;
+}
+
+AccelerationMonitor.prototype.start = function(callback) {
+	if (!this.monitoring) {
+		this.callback = callback;
+		this.currentCallback = this.callbackHandler.bind(this);
+		window.addEventListener("devicemotion", this.currentCallback, true);
+		this.monitoring = true;
+	}
+}
+
+AccelerationMonitor.prototype.stop = function() {
+	if (this.monitoring) {
+		window.removeEventListener("devicemotion", this.currentCallback, true);
+		this.monitoring = false;
+	}
+}
+
+AccelerationMonitor.prototype.callbackHandler = function(e) {
+	if (this.prevE && this.filter(this.prevE, e)) {
+		this.callback(this.prevE, e);
+	}
+	this.prevE = e;
+}
+
+function ShakeMonitor() {
+	this.accelerationMonitor = new AccelerationMonitor();
+	this.prevDown = false;
+	this.filter = function (e1,e2) {
+		var ea1 = e1.accelerationIncludingGravity;
+		var ea2 = e2.accelerationIncludingGravity;
+	    var z1 = ea1.z;
+	    var z2 = ea2.z;
+
+	    return z2-z1 < -1 || z2-z1 > 0.5;
+	}
+	this.callback = function() {}
+}
+
+ShakeMonitor.prototype.monitoring = function () {
+	return this.accelerationMonitor.monitoring;
+}
+
+ShakeMonitor.prototype.start = function (callback) {
+	if (!this.monitoring()) {
+		this.callback = callback;
+		this.accelerationMonitor.filter = this.filter;
+		this.accelerationMonitor.start(this.callbackHandler.bind(this));
+	}
+}
+
+ShakeMonitor.prototype.stop = function () {
+	if (this.monitoring()) {
+		this.accelerationMonitor.stop();
+	}
+}
+
+ShakeMonitor.prototype.callbackHandler = function(e1, e2) {
+	var ea1 = e1.accelerationIncludingGravity;
+	var ea2 = e2.accelerationIncludingGravity;
+    var z1 = ea1.z;
+    var z2 = ea2.z;
+	
+	if (!this.prevDown && z2-z1 < 0) {
+		this.callback(e1,e2);
+		this.prevDown = true;
+	}
+	else if (z2-z1 > 0) {
+		this.prevDown = false;
+	}
+}
+
+var am;
+var sm;
+
+window.onload = function () {
+	am = new AccelerationMonitor();
+	sm = new ShakeMonitor();
+}
+
+function toggleMonitoring(elem) {
+	if (!am.monitoring) {
+		am.filter = am.defaultFilter;
+		am.start(doSomething);
+		elem.innerHTML = "Stop";
+	}
+	else {
+		am.stop();
+		elem.innerHTML = "Start";
+	}
+}
+
+function toggleMonitoringF(elem) {
+	if (!sm.monitoring()) {
+		sm.start(doSomething2);
+		elem.innerHTML = "Stop";
+	}
+	else {
+		sm.stop();
+		elem.innerHTML = "Start with Filter";
+	}
+}
+
+function clearData() {
+	document.getElementById("stuff").innerHTML = "";
+}
+
+function doSomething(e1, e2) {
+	var x1 = e1.accelerationIncludingGravity.x;
+    var y1 = e1.accelerationIncludingGravity.y;
+    var z1 = e1.accelerationIncludingGravity.z;
+
+	var x2 = e2.accelerationIncludingGravity.x;
+    var y2 = e2.accelerationIncludingGravity.y;
+    var z2 = e2.accelerationIncludingGravity.z;
+
+   	logAccel(x2,y2,z2);
+}
+
+function doSomething2(e1, e2) {
+	var x1 = e1.accelerationIncludingGravity.x;
+    var y1 = e1.accelerationIncludingGravity.y;
+    var z1 = e1.accelerationIncludingGravity.z;
+
+	var x2 = e2.accelerationIncludingGravity.x;
+    var y2 = e2.accelerationIncludingGravity.y;
+    var z2 = e2.accelerationIncludingGravity.z;
+
+    logData("Delta: "+Math.abs(z2-z1));
+}
+
+function zFilter(e1,e2) {
+	var ea1 = e1.accelerationIncludingGravity;
+	var ea2 = e2.accelerationIncludingGravity;
+	var x1 = ea1.x;
+    var y1 = ea1.y;
+    var z1 = ea1.z;
+
+    var x2 = ea2.x;
+    var y2 = ea2.y;
+    var z2 = ea2.z;
+
+    return Math.abs(z2-z1) >= 3;
+}
+
+function logAccel(x,y,z) {
+    logData("x: "+x+", y: "+y+", z: "+z);
+}
+
+function logData(text) {
+	var p = document.createElement("p");
+    var t = document.createTextNode(text);
+    p.appendChild(t);
+
+    document.getElementById("stuff").appendChild(p);
+}
+</script>
+</head>
+<body>
+	<div id="toggleButton">
+		<button id="tb" onclick="toggleMonitoring(this)">Start</button>
+		<button id="cb" onclick="clearData()">Clear</button>
+		<button id="fb" onclick="toggleMonitoringF(this)">Start With Filter</button>
+	</div>
+	<div id="stuff">
+	</div>
+</body>
+</html>

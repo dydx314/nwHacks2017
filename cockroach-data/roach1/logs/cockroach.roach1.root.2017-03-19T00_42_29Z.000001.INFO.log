@@ -1,0 +1,48 @@
+I170319 00:42:29.755640 1 util/log/clog.go:1017  [config] file created at: 2017/03/19 00:42:29
+I170319 00:42:29.755640 1 util/log/clog.go:1017  [config] running on machine: roach1
+I170319 00:42:29.755640 1 util/log/clog.go:1017  [config] binary: CockroachDB CCL beta-20170309 (linux amd64, built 2017/03/09 16:31:10, go1.8)
+I170319 00:42:29.755640 1 util/log/clog.go:1017  [config] arguments: [/cockroach/cockroach start --insecure]
+I170319 00:42:29.755640 1 util/log/clog.go:1017  line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid file:line msg utf8=✓
+I170319 00:42:29.755637 1 cli/start.go:326  CockroachDB CCL beta-20170309 (linux amd64, built 2017/03/09 16:31:10, go1.8)
+I170319 00:42:29.865492 12 cli/start.go:361  starting cockroach node
+W170319 00:42:29.865568 12 server/server.go:156  [n?] running in insecure mode, this is strongly discouraged. See --insecure.
+I170319 00:42:29.875703 12 storage/engine/rocksdb.go:345  opening rocksdb instance at "cockroach-data"
+I170319 00:42:29.992434 12 server/config.go:482  1 storage engine initialized
+I170319 00:42:29.993674 12 server/server.go:598  [n?] sleeping for 381.562204ms to guarantee HLC monotonicity
+W170319 00:42:30.390158 31 storage/store.go:1405  [n1,s1] could not gossip system config: [NotLeaseHolderError] range 2: replica {1 1 1} not lease holder; lease holder unknown
+I170319 00:42:30.390856 12 storage/store.go:1318  [n1] [n1,s1]: failed initial metrics computation: [n1,s1]: system config not yet available
+I170319 00:42:30.391209 12 server/node.go:453  [n1] initialized store [n1,s1]: {Capacity:63943473102848 Available:25336502812672 RangeCount:8 LeaseCount:0}
+I170319 00:42:30.391235 12 server/node.go:341  [n1] node ID 1 initialized
+I170319 00:42:30.391306 12 gossip/gossip.go:293  [n1] NodeDescriptor set to node_id:1 address:<network_field:"tcp" address_field:"roach1:26257" > attrs:<> locality:<> 
+I170319 00:42:30.391424 12 storage/stores.go:296  [n1] read 0 node addresses from persistent storage
+I170319 00:42:30.391925 12 server/node.go:602  [n1] connecting to gossip network to verify cluster ID...
+I170319 00:42:30.391958 12 server/node.go:626  [n1] node connected via gossip and verified as part of cluster "5ad76ca2-40e9-47c4-a702-e28b7f2d4857"
+I170319 00:42:30.392001 12 server/node.go:391  [n1] node=1: started with [[]=cockroach-data] engine(s) and attributes []
+I170319 00:42:30.392055 12 sql/executor.go:337  [n1] creating distSQLPlanner with address {tcp roach1:26257}
+I170319 00:42:30.393512 12 server/server.go:652  [n1] starting http server at roach1:8080
+I170319 00:42:30.393530 12 server/server.go:653  [n1] starting grpc/postgres server at roach1:26257
+I170319 00:42:30.393545 12 server/server.go:654  [n1] advertising CockroachDB node at roach1:26257
+I170319 00:42:30.448559 12 server/server.go:780  [n1] done ensuring all necessary migrations have run
+I170319 00:42:30.448596 12 server/server.go:782  [n1] serving sql connections
+I170319 00:42:30.448729 12 cli/start.go:431  Startup message:
+CockroachDB node starting at 2017-03-19 00:42:30.448619023 +0000 UTC
+build:      CCL beta-20170309 @ 2017/03/09 16:31:10 (go1.8)
+admin:      http://roach1:8080
+sql:        postgresql://root@roach1:26257?sslmode=disable
+logs:       cockroach-data/logs
+store[0]:   path=cockroach-data
+status:     restarted pre-existing node
+clusterID:  5ad76ca2-40e9-47c4-a702-e28b7f2d4857
+nodeID:     1
+I170319 00:42:30.475881 67 sql/event_log.go:95  [n1] Event: "node_restart", target: 1, info: {Descriptor:{NodeID:1 Address:{NetworkField:tcp AddressField:roach1:26257} Attrs: Locality:} ClusterID:5ad76ca2-40e9-47c4-a702-e28b7f2d4857 StartedAt:1489884150391972640 LastUp:1489883506841227452}
+I170319 00:42:40.395648 49 storage/store.go:3992  [n1,s1] sstables (read amplification = 1):
+6 [ 77K 1 ]: 77K
+I170319 00:42:40.395767 68 server/status/runtime.go:228  runtime stats: 50 MiB RSS, 61 goroutines, 7.5 MiB/3.5 MiB/16 MiB GO alloc/idle/total, 4.9 MiB/8.4 MiB CGO alloc/total, 0.00cgo/sec, 0.00/0.00 %(u/s)time, 0.00 %gc (5x)
+I170319 00:42:50.395543 68 server/status/runtime.go:228  runtime stats: 51 MiB RSS, 61 goroutines, 9.5 MiB/2.5 MiB/17 MiB GO alloc/idle/total, 4.8 MiB/8.5 MiB CGO alloc/total, 69.30cgo/sec, 0.01/0.01 %(u/s)time, 0.00 %gc (1x)
+I170319 00:43:00.396255 68 server/status/runtime.go:228  runtime stats: 52 MiB RSS, 62 goroutines, 8.4 MiB/3.5 MiB/17 MiB GO alloc/idle/total, 5.3 MiB/9.3 MiB CGO alloc/total, 70.20cgo/sec, 0.01/0.00 %(u/s)time, 0.00 %gc (2x)
+I170319 00:43:10.395884 68 server/status/runtime.go:228  runtime stats: 53 MiB RSS, 62 goroutines, 6.4 MiB/6.2 MiB/18 MiB GO alloc/idle/total, 5.4 MiB/9.6 MiB CGO alloc/total, 65.20cgo/sec, 0.01/0.00 %(u/s)time, 0.00 %gc (2x)
+I170319 00:43:11.228339 1 cli/start.go:451  received signal 'terminated'
+I170319 00:43:11.228372 1 cli/start.go:476  initiating graceful shutdown of server
+I170319 00:43:11.233059 62 vendor/google.golang.org/grpc/transport/http2_server.go:323  transport: http2Server.HandleStreams failed to read frame: read tcp 172.18.0.2:26257->172.18.0.2:49912: use of closed network connection
+I170319 00:43:11.236284 350 storage/engine/rocksdb.go:410  closing rocksdb instance at "cockroach-data"
+I170319 00:43:11.241962 1 cli/start.go:512  server drained and shutdown completed

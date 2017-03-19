@@ -1,0 +1,68 @@
+@-webkit-keyframes flash-anim
+{
+	0%   {opacity: 0;}
+	50%  {opacity: 1;}
+	100% {opacity: 0;}
+}
+@keyframes flash-anim
+{
+	0%   {opacity: 0;}
+	50%  {opacity: 1;}
+	100% {opacity: 0;}
+}
+@-webkit-keyframes updown-anim
+{
+	0%   {bottom: 0px;}
+	100% {bottom: 200px;}
+}
+@keyframes updown-anim
+{
+	0%   {bottom: 0px;}
+	100% {bottom: 200px;}
+}
+@-webkit-keyframes wobble-lite-anim
+{
+	0%   {-webkit-transform: rotate(-3deg);}
+	50% {-webkit-transform: rotate(3deg);}
+	100%   {-webkit-transform: rotate(-3deg);}
+}
+@keyframes wobble-lite-anim
+{
+	0%   {transform: rotate(-3deg);}
+	50% {transform: rotate(3deg);}
+	100%   {transform: rotate(-3deg);}
+}
+@-webkit-keyframes wobble-heavy-anim
+{
+	0%   {-webkit-transform: rotate(-8deg);}
+	50% {-webkit-transform: rotate(8deg);}
+	100%   {-webkit-transform: rotate(-8deg);}
+}
+@keyframes wobble-heavy-anim
+{
+	0%   {transform: rotate(-8deg);}
+	50% {transform: rotate(8deg);}
+	100%   {transform: rotate(-8deg);}
+}
+@-webkit-keyframes rainbow-anim
+{
+	0%   {color: red;}
+	15%   {color: orange;}
+	30%   {color: yellow;}
+	45%   {color: green;}
+	60%   {color: blue;}
+	75%   {color: indigo;}
+	90%   {color: violet;}
+	100%   {color: red;}
+}
+@keyframes rainbow-anim
+{
+	0%   {color: red;}
+	15%   {color: orange;}
+	30%   {color: yellow;}
+	45%   {color: green;}
+	60%   {color: blue;}
+	75%   {color: indigo;}
+	90%   {color: violet;}
+	100%   {color: red;}
+}

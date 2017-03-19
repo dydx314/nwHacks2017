@@ -1,0 +1,8 @@
+W170319 00:29:35.510448 20 util/log/clog.go:1017  [config] file created at: 2017/03/19 00:29:35
+W170319 00:29:35.510448 20 util/log/clog.go:1017  [config] running on machine: roach1
+W170319 00:29:35.510448 20 util/log/clog.go:1017  [config] binary: CockroachDB CCL beta-20170309 (linux amd64, built 2017/03/09 16:31:10, go1.8)
+W170319 00:29:35.510448 20 util/log/clog.go:1017  [config] arguments: [/cockroach/cockroach start --insecure]
+W170319 00:29:35.510448 20 util/log/clog.go:1017  line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid file:line msg utf8=✓
+W170319 00:29:35.510441 20 server/server.go:156  [n?] running in insecure mode, this is strongly discouraged. See --insecure.
+E170319 00:29:35.604933 31 storage/queue.go:628  [replicate,n1,s1,r1/1:/{Min-Table/0},@c420436380] range requires a replication change, but lacks a quorum of live replicas (0/1)
+W170319 00:31:46.842513 788 sql/lease.go:260  error releasing lease "51(\"accounts\") ver=1:1489883789549677000": node unavailable; try another peer

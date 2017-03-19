@@ -1,0 +1,7 @@
+W170319 00:42:29.865573 12 util/log/clog.go:1017  [config] file created at: 2017/03/19 00:42:29
+W170319 00:42:29.865573 12 util/log/clog.go:1017  [config] running on machine: roach1
+W170319 00:42:29.865573 12 util/log/clog.go:1017  [config] binary: CockroachDB CCL beta-20170309 (linux amd64, built 2017/03/09 16:31:10, go1.8)
+W170319 00:42:29.865573 12 util/log/clog.go:1017  [config] arguments: [/cockroach/cockroach start --insecure]
+W170319 00:42:29.865573 12 util/log/clog.go:1017  line format: [IWEF]yymmdd hh:mm:ss.uuuuuu goid file:line msg utf8=✓
+W170319 00:42:29.865568 12 server/server.go:156  [n?] running in insecure mode, this is strongly discouraged. See --insecure.
+W170319 00:42:30.390158 31 storage/store.go:1405  [n1,s1] could not gossip system config: [NotLeaseHolderError] range 2: replica {1 1 1} not lease holder; lease holder unknown

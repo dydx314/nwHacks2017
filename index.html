@@ -1,15 +1,323 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>MY APP</title>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700' rel='stylesheet' type='text/css'>
+<link href='normalize.css' rel='stylesheet' type='text/css'>
+<link href='anim.css' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/acceleration_monitor.js"></script>
+<script type="text/javascript" src="js/game_manager.js"></script>
+<script type="text/javascript">
+var testing = true;
+
+var sm;
+var gm;
+
+window.onload = function () {
+	gm = new GameManager();
+	sm = new ShakeMonitor(onInit);
+
+	if (testing) {
+		document.getElementById("browsersux").style.display = "none";
+		document.getElementById("main").style.display = "block";
+		document.getElementById("b_shake").style.display = "inline";
+	}
+	gm.addUpdateListener(renderUpdate);
+	setInterval(decreaseTurbulence,1000);
+	setInterval(mvBoost,1000);
+}
+
+function onInit() {
+	document.getElementById("browsersux").style.display = "none";
+	document.getElementById("main").style.display = "block";
+
+	sm.start(onShake);
+}
+
+function buyMV() {
+	gm.buyMV();
+}
+
+function onShake(e1,e2) {
+	var x1 = e1.accelerationIncludingGravity.x;
+    var y1 = e1.accelerationIncludingGravity.y;
+    var z1 = e1.accelerationIncludingGravity.z;
+
+	var x2 = e2.accelerationIncludingGravity.x;
+    var y2 = e2.accelerationIncludingGravity.y;
+    var z2 = e2.accelerationIncludingGravity.z;
+
+    updateShake(z1,z2);
+}
+
+function decreaseTurbulence() {
+	gm.decreaseTurbulence(1);
+}
+
+function mvBoost() {
+	var tt = gm.getTurbulenceTier();
+	var bonus = gm.mv * gm.MV_TIER[tt];
+	gm.addMilk(bonus);
+}
+
+function updateShake(z1,z2) {
+	var diff = Math.abs(z2-z1)
+	gm.shakeMilk(diff);
+
+	document.getElementById("milk_overlay").innerHTML = "+ "+diff.toFixed(1)+" mL";
+	anim_milk_overlay();
+}
+
+function renderUpdate() {
+	document.getElementById("counter").innerHTML = Math.round(gm.milk)+" mL";
+	document.getElementById("store_milk").innerHTML = Math.round(gm.milk)+" mL";
+	renderTurbulence();
+	renderMV();
+}
+
+function renderMV() {
+	var bb = document.getElementById("b_buy");
+	if (gm.canBuyMV()) {
+		bb.disabled = false;
+	}
+	else {
+		bb.disabled = true;
+	}
+
+	if (gm.MV_COST[gm.mv]) {
+		bb.innerHTML = "Buy one for "+gm.MV_COST[gm.mv]+" mL";
+	}
+	else {
+		bb.innerHTML = "SOLD OUT";
+	}
+
+	if (gm.mv > 0) {
+		var tt = gm.getTurbulenceTier();
+		var bonus = gm.mv * gm.MV_TIER[tt];
+		document.getElementById("bonus_desc").innerHTML = "+ "+bonus.toFixed(1)+"mL/s";
+	}
+}
+
+function renderTurbulence() {
+	var td = document.getElementById("turbulence_desc");
+	switch (gm.getTurbulenceTier()) {
+		case 1:
+			td.innerHTML = "Shake to make some milk!";
+			anim_milk("");
+			break;
+		case 2:
+			td.innerHTML = "Slightly disturbed";
+			anim_milk("wobble1");
+			break;
+		case 3:
+			td.innerHTML = "Agitated";
+			anim_milk("wobble2");
+			break;
+		case 4:
+			td.innerHTML = "Getting there...";
+			anim_milk("wobble3");
+			break;
+		case 5:
+			td.innerHTML = "Milk Party!";
+			anim_milk("wobble4");
+			break;
+		default:
+			break;
+	}
+	anim_turbulence();
+}
+
+function anim_turbulence() {
+	$td = $("#turbulence_desc");
+	if (gm.getTurbulenceTier() != 5) {
+		$td.removeClass();
+	}
+	else if (!$td.hasClass("rainbow")) {
+		$td.removeClass();
+		$td[0].offsetWidth = $td[0].offsetWidth; // magic
+		$td.addClass("rainbow");
+	}
+}
+
+function anim_milk(anim_class) {
+	$mo = $("#milk");
+	if (!$mo.hasClass(anim_class)) {
+		$mo.removeClass();
+		$mo[0].offsetWidth = $mo[0].offsetWidth; // magic
+		$mo.addClass(anim_class);
+	}
+}
+
+function anim_milk_overlay() {
+	$mo = $("#milk_overlay");
+	$mo.css("left", 125 - $mo.width() / 2);
+
+	$mo.removeClass("flash-move");
+	$mo[0].offsetWidth = $mo[0].offsetWidth; // magic
+	$mo.addClass("flash-move");
+}
+
+function showStore() {
+	document.getElementById("overlay").style.display = "block";
+	document.getElementById("store").style.display = "block";
+}
+
+function hideStore() {
+	document.getElementById("overlay").style.display = "none";
+	document.getElementById("store").style.display = "none";
+}
+
+</script>
+<style type="text/css">
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+#browsersux {
+	padding: 50px;
+	font-size: 130px;
+	font-weight: bold;
+	text-align: center;
+}
+#main {
+	display: none;
+	text-align: center;
+}
+#main > h1 {
+	font-weight: bold;
+	font-size: 90px;
+	margin: 0.3em 0 0 0;
+}
+#counter {
+	font-size: 60px;
+	font-weight: 600;
+	margin: 0.2em 0 0.2em 0;
+}
+#milk {
+	position: relative;
+    background-image: url("milkbottle.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 250px;
+    height: 300px;
+    margin: 0 auto 0 auto;
+}
+#milk_overlay {
+	position: absolute;
+	bottom: 0;
+	color: #12336B;
+	font-size: 90px;
+	font-weight: bold;
+	white-space: nowrap;
+	text-align: center;
+	opacity: 0;
+}
+#b_shake {
+	display: none;
+}
+#turbulence_desc {
+	font-size: 70px;
+	font-weight: 700;
+	margin: 0.2em 0 0.2em 0;
+}
+#overlay {
+	display: none;
+	position: absolute;
+  	top: 0;
+  	left: 0;
+  	width: 100%;
+  	height: 100%;
+  	z-index: 10;
+  	background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+#store {
+	display: none;
+	position: fixed;
+	top: 80px;
+	left: 0;
+	right: 0;
+	margin: 0 auto 0 auto;
+	width: 600px;
+	height: 400px;
+	z-index: 15;
+	background-color: white;
+	text-align: left;
+	padding: 20px;
+}
+#store_header {
+	font-size: 20px;
+	font-weight: bold;
+	border-bottom: 1px solid black;
+}
+#store_milk {
+	float: right;
+}
+#store_main {
+	position: relative;
+}
+.store_item h1 {
+	font-size: 15px;
+	font-weight: bold;
+}
+.store_button_wrapper {
+	float: right;
+}
+#exit_store_wrapper {
+	position: absolute;
+	top: 330px;
+	left: 250px;
+}
+
+.flash-move {
+	-webkit-animation: flash-anim 0.5s, updown-anim 0.5s;
+	animation: flash-anim 0.5s, updown-anim 0.5s;
+}
+.wobble1 {
+	-webkit-animation: wobble-lite-anim 2s linear infinite;
+	animation: wobble-lite-anim 2s linear infinite;
+}
+.wobble2 {
+	-webkit-animation: wobble-lite-anim 1s linear infinite;
+	animation: wobble-lite-anim 1s linear infinite;
+}
+.wobble3 {
+	-webkit-animation: wobble-heavy-anim 1s linear infinite;
+	animation: wobble-heavy-anim 1s linear infinite;
+}
+.wobble4 {
+	-webkit-animation: wobble-heavy-anim 0.3s linear infinite;
+	animation: wobble-heavy-anim 0.3s linear infinite;
+}
+.rainbow {
+	-webkit-animation: rainbow-anim 0.5s linear infinite;
+	animation: rainbow-anim 0.5s linear infinite;
+}
+</style>
 </head>
 <body>
-  pls work u fuk.
-  <form action="/quotes" method="POST">
-  <input type="text" placeholder="name" name="name">
-  <input type="text" placeholder="quote" name="quote">
-  <button type="submit">Submit</button>
-</form>
+	<div id="browsersux">Your computer and/or browser sux.</div>
+	<div id="main">
+		<h1>Milkshaker</h1>
+		<p id="counter">0 mL</p>
+		<div id="milk_wrapper">
+			<div id="milk"><div id="milk_overlay">+ 0 mL</div></div>
+		</div>
+		<button id="b_shake" onclick="updateShake(0,4.27)">Shake</button>
+		<p id="turbulence_desc">Shake to make some milk!</p>
+		<button onclick="showStore()">Store</button>
+		<span id="bonus_desc"></span>
+		<div id="overlay"></div>
+		<div id="store">
+			<div id="store_header">Store<div id="store_milk">0 mL</div></div>
+			<div id="store_main">
+				<div class="store_item">
+					<h1>Micro-vibrator</h1>
+					<div class="store_button_wrapper"><button id="b_buy" onclick="buyMV()" disabled>Buy one for 100 mL</button></div>
+					<p>Its micro-vibration pulses can be used to magnify milk turbulence, generating free milk.</p>
+				</div>
+				<div id="exit_store_wrapper"><button onclick="hideStore()">Exit store</button></div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
