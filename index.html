@@ -57,20 +57,20 @@ function decreaseTurbulence() {
 function mvBoost() {
 	var tt = gm.getTurbulenceTier();
 	var bonus = gm.mv * gm.MV_TIER[tt];
-	gm.addMilk(bonus);
+	gm.addSalt(bonus);
 }
 
 function updateShake(z1,z2) {
 	var diff = Math.abs(z2-z1)
-	gm.shakeMilk(diff);
+	gm.shakeSalt(diff);
 
-	document.getElementById("milk_overlay").innerHTML = "+ "+diff.toFixed(1)+" mL";
-	anim_milk_overlay();
+	document.getElementById("salt_overlay").innerHTML = "+ "+diff.toFixed(1)+" mL";
+	anim_salt_overlay();
 }
 
 function renderUpdate() {
-	document.getElementById("counter").innerHTML = Math.round(gm.milk)+" mL";
-	document.getElementById("store_milk").innerHTML = Math.round(gm.milk)+" mL";
+	document.getElementById("counter").innerHTML = Math.round(gm.salt)+" mL";
+	document.getElementById("store_salt").innerHTML = Math.round(gm.salt)+" mL";
 	renderTurbulence();
 	renderMV();
 }
@@ -102,24 +102,24 @@ function renderTurbulence() {
 	var td = document.getElementById("turbulence_desc");
 	switch (gm.getTurbulenceTier()) {
 		case 1:
-			td.innerHTML = "Shake to make some milk!";
-			anim_milk("");
+			td.innerHTML = "Shake to make some salt!";
+			anim_salt("");
 			break;
 		case 2:
 			td.innerHTML = "Slightly disturbed";
-			anim_milk("wobble1");
+			anim_salt("wobble1");
 			break;
 		case 3:
 			td.innerHTML = "Agitated";
-			anim_milk("wobble2");
+			anim_salt("wobble2");
 			break;
 		case 4:
 			td.innerHTML = "Getting there...";
-			anim_milk("wobble3");
+			anim_salt("wobble3");
 			break;
 		case 5:
-			td.innerHTML = "Milk Party!";
-			anim_milk("wobble4");
+			td.innerHTML = "Salt Party!";
+			anim_salt("wobble4");
 			break;
 		default:
 			break;
@@ -139,8 +139,8 @@ function anim_turbulence() {
 	}
 }
 
-function anim_milk(anim_class) {
-	$mo = $("#milk");
+function anim_salt(anim_class) {
+	$mo = $("#salt");
 	if (!$mo.hasClass(anim_class)) {
 		$mo.removeClass();
 		$mo[0].offsetWidth = $mo[0].offsetWidth; // magic
@@ -148,8 +148,8 @@ function anim_milk(anim_class) {
 	}
 }
 
-function anim_milk_overlay() {
-	$mo = $("#milk_overlay");
+function anim_salt_overlay() {
+	$mo = $("#salt_overlay");
 	$mo.css("left", 125 - $mo.width() / 2);
 
 	$mo.removeClass("flash-move");
@@ -192,7 +192,7 @@ body {
 	font-weight: 600;
 	margin: 0.2em 0 0.2em 0;
 }
-#milk {
+#salt {
 	position: relative;
     background-image: url("img/saltbae.gif");
     background-size: cover;
@@ -202,7 +202,7 @@ body {
     height: 300px;
     margin: 0 auto 0 auto;
 }
-#milk_overlay {
+#salt_overlay {
 	position: absolute;
 	bottom: 0;
 	color: #12336B;
@@ -249,7 +249,7 @@ body {
 	font-weight: bold;
 	border-bottom: 1px solid black;
 }
-#store_milk {
+#store_salt {
 	float: right;
 }
 #store_main {
@@ -299,7 +299,7 @@ body {
 	<div id="main">
 		<h1>Salt Sprinkler</h1>
 		<p id="counter">0 mL</p>
-		<div id="milk_wrapper">
+		<div id="salt_wrapper">
 			<div id="salt"><div id="salt_overlay">+ 0 mL</div></div>
 		</div>
 		<button id="b_shake" onclick="updateShake(0,4.27)">Shake</button>
@@ -308,7 +308,7 @@ body {
 		<span id="bonus_desc"></span>
 		<div id="overlay"></div>
 		<div id="store">
-			<div id="store_header">Store<div id="store_milk">0 mL</div></div>
+			<div id="store_header">Store<div id="store_salt">0 mL</div></div>
 			<div id="store_main">
 				<div class="store_item">
 					<h1>Micro-vibrator</h1>
