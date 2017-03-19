@@ -48,6 +48,7 @@ GameManager.prototype.stop = function() {
     this.totalRating += curRating;
     this.avgRating = this.totalRating/this.raters;
     this.salt = 0;
+    this.optimal = 80 + Math.random()*500;
 };
 
 GameManager.prototype.shakeSalt = function(salt) {

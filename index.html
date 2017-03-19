@@ -15,7 +15,7 @@ var sm;
 var gm;
 
 window.onload = function () {
-	
+	gm = new GameManager();
 	sm = new ShakeMonitor(onInit);
 
 	if (testing) {
@@ -202,9 +202,31 @@ function hideStore() {
 	document.getElementById("overlay").style.display = "none";
 	document.getElementById("store").style.display = "none";
 }
-
-function showLB() {
     
+function showLB(data) {
+    document.getElementById("overlay").style.display = "block";
+	document.getElementById("leaderboard").style.display = "block";
+    console.log(data);
+    data.data.forEach((elem) => {
+        $('#leaderboard_main').append("<div>" + elem.name + " " + elem.score + "</div>");
+        //leaderboard = leaderboard.concat("\n" + elem.name + " " + elem.score);
+    });
+}
+function enterName() {
+    var name = prompt("Please enter your name", "name here");
+    
+    if (name != null) {
+        gm.name = name;
+        endGame();
+    }
+}
+    
+function endGame() {
+    $.post("http://13.64.119.125:8888/submit_score", {name: gm.name, score: gm.avgRating*1000000000}, function() {
+        $.get("http://13.64.119.125:8888/highscore", function(data) {
+            showLB(data);
+        });
+    });
 }
 
 </script>
@@ -337,6 +359,32 @@ body {
 	top: 330px;
 	left: 250px;
 }
+    
+#leaderboard {
+	display: none;
+	position: fixed;
+	top: 80px;
+	left: 0;
+	right: 0;
+	margin: 0 auto 0 auto;
+	width: 600px;
+	height: 400px;
+	z-index: 15;
+	background-color: white;
+	text-align: left;
+	padding: 20px;
+}
+#leaderboard_header {
+	font-size: 20px;
+	font-weight: bold;
+	border-bottom: 1px solid black;
+}
+#leaderboard_salt {
+	float: right;
+}
+#leaderboard_main {
+	position: relative;
+}
 
 .flash-move {
 	-webkit-animation: flash-anim 0.5s, updown-anim 0.5s;
@@ -402,8 +450,14 @@ body {
 				<div id="exit_store_wrapper"><button onclick="hideStore()">Exit store</button></div>
 			</div>
 		</div>
+        <div id="leaderboard">
+			<div id="leaderboard_header">Leaderboard</div>
+			<div id="leaderboard_main">
+				
+			</div>
+		</div>
         
-        <button onclick="showLB()">Exit</button>
+        <button onclick="enterName()">Exit</button>
         
 	</div>
 </body>
