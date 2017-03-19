@@ -10,8 +10,8 @@ function GameManager() {
 	this.callbacks = [];
 	this.turbulence = 0;
 	this.MAX_TURBULENCE = 100;
-	this.MV_TIER = {1: 0.1, 2:0.2, 3:0.5, 4:1, 5:2};
-	this.MV_COST = {0: 100, 1: 200, 2:500, 3:800, 4:1500};
+	this.MV_TIER = {0: 0.5, 1: 1, 2:2, 3:5, 4:10, 5:20};
+	this.MV_COST = {0: 1000, 1: 2000, 2:5000, 3:8000, 4:15000};
 	this.off = false;
 	this.optimal = 100;
 	this.tip = 0;
@@ -19,18 +19,28 @@ function GameManager() {
 
 GameManager.prototype.stop = function() {
     this.raters++;
-	if(this.optimal == this.salt) {
-		this.tip += 5;
-        this.totalRating += 5;
+    diff = this.optimal-this.salt;
+    if (diff < 0) {
+        diff = -diff;
+    }
+    curRating = 0;
+	if(diff/this.optimal < 0.2) {
+        curRating = 5;
 	}
-	if(this.optimal > this.salt) {
-		this.tip += 2;
-        this.totalRating += 2;
+	else if(diff/this.optimal < 0.4) {
+		curRating = 4;
 	}
-	if(this.optimal < this.salt) {
-		this.tip += 1;
-        this.totalRating += 1;
+	else if(diff/this.optimal < 0.6) {
+		curRating = 3;
 	}
+    else if(diff/this.optimal < 0.8) {
+		curRating = 2;
+	}
+    else {
+		curRating = 1;
+	}
+    this.tip += 100*curRating*this.MV_TIER[this.mv];
+    this.totalRating += curRating;
     this.avgRating = this.totalRating/this.raters;
     this.salt = 0;
 };
@@ -76,8 +86,8 @@ GameManager.prototype.getTurbulenceTier = function() {
 
 GameManager.prototype.buyMV = function() {
 	if (this.canBuyMV()) {
-		// Subtract Salt
-		this.salt -= this.MV_COST[this.mv];
+		// Subtract tip
+		this.tip -= this.MV_COST[this.mv];
 		// Add item
 		this.mv += 1;
 		this.notifyUpdate();
@@ -85,7 +95,7 @@ GameManager.prototype.buyMV = function() {
 };
 
 GameManager.prototype.canBuyMV = function() {
-	return this.MV_COST[this.mv] && this.salt >= this.MV_COST[this.mv];
+	return this.MV_COST[this.mv] && this.tip >= this.MV_COST[this.mv];
 };
 
 /*
