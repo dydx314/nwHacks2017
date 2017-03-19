@@ -7,6 +7,7 @@
 <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="js/acceleration_monitor.js"></script>
 <script type="text/javascript" src="js/game_manager.js"></script>
+<script type="text/javascript" src="js/leaderboard.js"></script>
 <script type="text/javascript">
 var testing = true;
 
@@ -66,19 +67,26 @@ function updateShake(z1,z2) {
 	var diff = Math.abs(z2-z1)
 	gm.shakeSalt(diff);
 
-	document.getElementById("salt_overlay").innerHTML = "+ "+diff.toFixed(1)+" mg";
+	document.getElementById("salt_overlay").innerHTML = "+ "+diff.toFixed(2)+" mg";
 	anim_salt_overlay();
 }
 
 function stop() {
 	gm.stop();
-    document.getElementById("tip_counter").innerHTML = "Total tip: $"+Math.round(gm.tip);
+    document.getElementById("tip_counter").innerHTML = "Total tip: $"+(Math.round(gm.tip)/100).toFixed(2);
     document.getElementById("avg_rating").innerHTML = "Customer Rating: "+Math.round(gm.avgRating*10)/10+"/5";
+    if (gm.mv == 4) {
+        if (gm.tip > 50000) {
+            document.getElementById("salt").style.backgroundImage = "url(img/victory.png)";
+            document.getElementById("turbulence_desc").innerHTML = "YOU WIN!";
+
+        }
+    }
 }
 
 function renderUpdate() {
 	document.getElementById("counter").innerHTML = Math.round(gm.salt)+" mg";
-	document.getElementById("store_salt").innerHTML = Math.round(gm.salt)+" mg";
+	document.getElementById("store_salt").innerHTML = "$"+(Math.round(gm.tip)/100).toFixed(2);
 	renderTurbulence();
 	renderMV();
 }
@@ -94,7 +102,7 @@ function renderMV() {
 	}
 
 	if (gm.MV_COST[gm.mv]) {
-		bb.innerHTML = "Buy one for "+gm.MV_COST[gm.mv]+" mg";
+		bb.innerHTML = "Buy one for $"+(gm.MV_COST[gm.mv]/100).toFixed(2);
 	}
 	else {
 		bb.innerHTML = "SOLD OUT";
@@ -103,8 +111,20 @@ function renderMV() {
 	if (gm.mv > 0) {
 		var tt = gm.getTurbulenceTier();
 		var bonus = gm.mv * gm.MV_TIER[tt];
-		document.getElementById("bonus_desc").innerHTML = "+ "+bonus.toFixed(1)+"mg/s";
+		document.getElementById("bonus_desc").innerHTML = "+ $"+bonus.toFixed(2)+"/customer";
 	}
+    
+    document.getElementById("tip_counter").innerHTML = "Total tip: $"+(Math.round(gm.tip)/100).toFixed(2);
+    if (gm.mv == 1) {
+        document.getElementById("food").style.backgroundImage = "url(img/freshslice.png)";
+    } else if (gm.mv == 2) {
+        document.getElementById("food").style.backgroundImage = "url(img/chinese.jpg)";
+    } else if (gm.mv == 3) {
+        document.getElementById("food").style.backgroundImage = "url(img/steak.jpg)";
+    } else if (gm.mv == 4) {
+        document.getElementById("food").style.backgroundImage = "url(img/lobster.jpg)";
+    }
+
 }
 
 function renderTurbulence() {
@@ -233,7 +253,7 @@ body {
 }
 #food {
 	position: relative;
-    background-image: url("img/chinese.jpg");
+    background-image: url("img/mcd.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -241,9 +261,9 @@ body {
     height: 100px;
     margin: 0 auto 0 auto;
 }
-#salt_overlay {
+#food_overlay {
 	position: absolute;
-	bottom: 0;
+	bottom: 10px;
 	color: #12336B;
 	font-size: 90px;
 	font-weight: bold;
@@ -340,32 +360,33 @@ body {
 
 		<h1>Salt Sprinkler</h1>
         
-        <p id="tip_counter">Total tip: $0</p>
+        <p id="tip_counter">Total tip: $0.00</p>
         
-        <p id="avg_rating">Average Customer Rating: 0/5</p>
+        <p id="avg_rating">Customer Rating: 0/5</p>
         
-		<p id="counter">0 mg</p>
+		
 		<div id="salt_wrapper">
 			<div id="salt"><div id="salt_overlay">+ 0 mg</div></div>
 		</div>
         <div id="food_wrapper">
 			<div id="food"><div id="food_overlay"></div></div>
 		</div>
+        <p id="counter">0 mg</p>
 		<button id="b_shake" onclick="updateShake(0,4.27)">Shake</button>
 
-		<button id="stop" onclick="stop()">Stop</button>
+		<button id="stop" onclick="stop()">Serve</button>
 
 		<p id="turbulence_desc">Shake to add some salt!</p>
 		<button onclick="showStore()">Store</button>
 		<span id="bonus_desc"></span>
 		<div id="overlay"></div>
 		<div id="store">
-			<div id="store_header">Store<div id="store_salt">0 mg</div></div>
+			<div id="store_header">Store<div id="store_salt">$0.00</div></div>
 			<div id="store_main">
 				<div class="store_item">
-					<h1>Micro-vibrator</h1>
-					<div class="store_button_wrapper"><button id="b_buy" onclick="buyMV()" disabled>Buy one for 100 mg</button></div>
-					<p>Its micro-vibration pulses can be used to magnify salt turbulence, generating free salt.</p>
+					<h1>Upgrade Restaurant</h1>
+					<div class="store_button_wrapper"><button id="b_buy" onclick="buyMV()" disabled>Buy one for $10.00</button></div>
+					<h4>Have a lot of revenue? Level up and open a more expensive restaurant!</h4>
 				</div>
 				<div id="exit_store_wrapper"><button onclick="hideStore()">Exit store</button></div>
 			</div>
