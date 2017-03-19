@@ -64,13 +64,13 @@ function updateShake(z1,z2) {
 	var diff = Math.abs(z2-z1)
 	gm.shakeSalt(diff);
 
-	document.getElementById("salt_overlay").innerHTML = "+ "+diff.toFixed(1)+" mL";
+	document.getElementById("salt_overlay").innerHTML = "+ "+diff.toFixed(1)+" mg";
 	anim_salt_overlay();
 }
 
 function renderUpdate() {
-	document.getElementById("counter").innerHTML = Math.round(gm.salt)+" mL";
-	document.getElementById("store_salt").innerHTML = Math.round(gm.salt)+" mL";
+	document.getElementById("counter").innerHTML = Math.round(gm.salt)+" mg";
+	document.getElementById("store_salt").innerHTML = Math.round(gm.salt)+" mg";
 	renderTurbulence();
 	renderMV();
 }
@@ -85,7 +85,7 @@ function renderMV() {
 	}
 
 	if (gm.MV_COST[gm.mv]) {
-		bb.innerHTML = "Buy one for "+gm.MV_COST[gm.mv]+" mL";
+		bb.innerHTML = "Buy one for "+gm.MV_COST[gm.mv]+" mg";
 	}
 	else {
 		bb.innerHTML = "SOLD OUT";
@@ -94,7 +94,7 @@ function renderMV() {
 	if (gm.mv > 0) {
 		var tt = gm.getTurbulenceTier();
 		var bonus = gm.mv * gm.MV_TIER[tt];
-		document.getElementById("bonus_desc").innerHTML = "+ "+bonus.toFixed(1)+"mL/s";
+		document.getElementById("bonus_desc").innerHTML = "+ "+bonus.toFixed(1)+"mg/s";
 	}
 }
 
@@ -298,9 +298,9 @@ body {
 	<div id="browsersux">Your computer and/or browser sux.</div>
 	<div id="main">
 		<h1>Salt Sprinkler</h1>
-		<p id="counter">0 mL</p>
+		<p id="counter">0 mg</p>
 		<div id="salt_wrapper">
-			<div id="salt"><div id="salt_overlay">+ 0 mL</div></div>
+			<div id="salt"><div id="salt_overlay">+ 0 mg</div></div>
 		</div>
 		<button id="b_shake" onclick="updateShake(0,4.27)">Shake</button>
 		<p id="turbulence_desc">Shake to add some salt!</p>
